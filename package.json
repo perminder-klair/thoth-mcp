@@ -2,6 +2,7 @@
   "name": "@thoth/mcp-server",
   "version": "1.0.0",
   "description": "Model Context Protocol server for Thoth content creation platform",
+  "mcpName": "com.usethoth/mcp-server",
   "type": "module",
   "main": "./dist/index.js",
   "bin": {
@@ -26,6 +27,14 @@
   ],
   "author": "Thoth Team",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/perminder-klair/thoth-mcp.git"
+  },
+  "homepage": "https://github.com/perminder-klair/thoth-mcp#readme",
+  "bugs": {
+    "url": "https://github.com/perminder-klair/thoth-mcp/issues"
+  },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.18.0",
     "zod": "^4.1.8"
