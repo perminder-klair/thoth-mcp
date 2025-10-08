@@ -1,28 +1,69 @@
 # Thoth MCP Server
 
+[![npm version](https://badge.fury.io/js/@usethoth%2Fmcp-server.svg)](https://www.npmjs.com/package/@usethoth/mcp-server)
+[![MCP Registry](https://img.shields.io/badge/MCP%20Registry-io.github.zeiq--co%2Fthoth--mcp-blue)](https://registry.modelcontextprotocol.io/servers/io.github.zeiq-co/thoth-mcp)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 Model Context Protocol (MCP) server for [Thoth](https://usethoth.com) content creation platform. This server enables AI assistants and tools to create and retrieve content through Thoth's API.
+
+## Quick Start
+
+```bash
+# Install via npx
+npx @usethoth/mcp-server --api-key YOUR_API_KEY
+
+# Or configure in Claude Desktop (see Configuration below)
+```
+
+Get your API key at [app.usethoth.com/settings/api-keys](https://app.usethoth.com/settings/api-keys)
+
+## Table of Contents
+
+- [Quick Start](#quick-start)
+- [Features](#features)
+- [Installation](#installation)
+- [Usage](#usage)
+- [MCP Client Configuration](#mcp-client-configuration)
+- [Available Tools](#available-tools)
+- [Available Resources](#available-resources)
+- [Development](#development)
+- [API Integration](#api-integration)
+- [Examples](#examples)
+- [Troubleshooting](#troubleshooting)
+- [Contributing](#contributing)
+- [Support](#support)
+- [Changelog](#changelog)
 
 ## Features
 
 - **Create Content**: Generate platform-optimized content with AI enhancement
-- **Retrieve Posts**: Fetch post data and platform-specific previews
+- **Retrieve & Manage Posts**: Fetch, list, and update post data with pagination
 - **Multi-Platform Support**: Twitter, Instagram, LinkedIn, Facebook, Threads, Blog, Reddit
+- **Brand Styles**: Apply consistent voice, tone, and visual styling with brand presets
 - **Image Generation**: Optionally generate images for your content
+- **Scheduling**: Schedule posts for future publication
 - **Dual Transport**: Run locally (stdio) or as a remote HTTP server
 - **Type-Safe**: Built with TypeScript and Zod validation
 
 ## Installation
 
+### Via MCP Registry (Recommended)
+
+The server is published in the [official MCP Registry](https://registry.modelcontextprotocol.io/) as `io.github.zeiq-co/thoth-mcp`.
+
+Browse and install via the registry web interface, or configure directly in your MCP client (see [MCP Client Configuration](#mcp-client-configuration) below).
+
 ### Global Installation (via npx)
 
 ```bash
-npx @thoth/mcp-server --api-key YOUR_API_KEY
+npx @usethoth/mcp-server --api-key YOUR_API_KEY
 ```
 
 ### Local Development
 
 ```bash
-cd mcp
+git clone https://github.com/perminder-klair/thoth-mcp.git
+cd thoth-mcp
 pnpm install
 pnpm build
 ```
@@ -43,19 +84,19 @@ You'll need a Thoth API key. Generate one at:
 This is the default mode for use with MCP clients like Claude Desktop:
 
 ```bash
-npx @thoth/mcp-server --api-key YOUR_API_KEY
+npx @usethoth/mcp-server --api-key YOUR_API_KEY
 ```
 
-or with inspector:
+Or debug with MCP Inspector:
 
 ```bash
-npx @modelcontextprotocol/inspector pnpm start -- --api-key YOUR_API_KEY
+npx @modelcontextprotocol/inspector npx @usethoth/mcp-server --api-key YOUR_API_KEY
 ```
 
 With custom base URL:
 
 ```bash
-npx @thoth/mcp-server \
+npx @usethoth/mcp-server \
   --api-key YOUR_API_KEY \
   --base-url https://app.usethoth.com
 ```
@@ -76,7 +117,7 @@ Instead of command-line flags, you can use environment variables:
 ```bash
 export THOTH_API_KEY=your_api_key
 export THOTH_BASE_URL=http://localhost:3000
-npx @thoth/mcp-server
+npx @usethoth/mcp-server
 ```
 
 ## MCP Client Configuration
@@ -94,7 +135,7 @@ Add to your Claude Desktop config file:
     "thoth": {
       "command": "npx",
       "args": [
-        "@thoth/mcp-server",
+        "@usethoth/mcp-server",
         "--api-key",
         "YOUR_API_KEY",
         "--base-url",
@@ -110,6 +151,17 @@ Add to your Claude Desktop config file:
 For other MCP clients that support stdio transport, use a similar configuration with appropriate command and args.
 
 ## Available Tools
+
+The server provides 6 tools for managing Thoth content:
+
+| Tool | Description |
+|------|-------------|
+| `create-post` | Create multi-platform content with AI enhancement |
+| `get-post` | Retrieve a specific post by ID |
+| `get-all-posts` | List posts with pagination and filtering |
+| `update-post` | Update existing post title, content, or status |
+| `get-brand-styles` | List all available brand styles |
+| `get-brand-style` | Get detailed brand style configuration |
 
 ### create-post
 
@@ -171,6 +223,93 @@ Retrieve a post by its ID.
 - Generated images
 - Status and metadata
 
+### get-all-posts
+
+List all posts with pagination and filtering.
+
+**Parameters:**
+
+- `page` (optional): Page number (default: `1`)
+- `limit` (optional): Posts per page (default: `10`)
+- `status` (optional): Filter by status - `draft`, `scheduled`, `published`
+
+**Example:**
+
+```json
+{
+  "page": 1,
+  "limit": 20,
+  "status": "published"
+}
+```
+
+**Returns:**
+
+- Array of posts with metadata
+- Pagination information
+- Total count
+
+### update-post
+
+Update an existing post.
+
+**Parameters:**
+
+- `postId` (required): UUID of the post to update
+- `title` (optional): New title for the post
+- `content` (optional): New content
+- `status` (optional): New status - `draft`, `scheduled`, `published`
+
+**Example:**
+
+```json
+{
+  "postId": "123e4567-e89b-12d3-a456-426614174000",
+  "title": "Updated Title",
+  "status": "published"
+}
+```
+
+**Returns:**
+
+- Updated post data
+- Confirmation message
+
+### get-brand-styles
+
+List all available brand styles for your account.
+
+**Parameters:** None
+
+**Returns:**
+
+- Array of brand styles with IDs and names
+- Style metadata
+
+### get-brand-style
+
+Get details for a specific brand style.
+
+**Parameters:**
+
+- `brandStyleId` (required): UUID of the brand style
+
+**Example:**
+
+```json
+{
+  "brandStyleId": "123e4567-e89b-12d3-a456-426614174000"
+}
+```
+
+**Returns:**
+
+- Brand style name and description
+- Color palette
+- Typography settings
+- Tone and voice guidelines
+- Imagery preferences
+
 ## Available Resources
 
 ### post://{postId}
@@ -224,7 +363,11 @@ pnpm dev
 The MCP server connects to Thoth's REST API endpoints:
 
 - `POST /api/v1/posts` - Create new posts
-- `GET /api/v1/posts/{postId}` - Retrieve post data
+- `GET /api/v1/posts/{postId}` - Retrieve single post
+- `GET /api/v1/posts` - List posts with pagination
+- `PUT /api/v1/posts/{postId}` - Update existing post
+- `GET /api/v1/brand-styles` - List brand styles
+- `GET /api/v1/brand-styles/{brandStyleId}` - Get brand style details
 
 All requests require the `X-API-Key` header for authentication.
 
@@ -259,7 +402,7 @@ The server provides detailed error messages for common issues:
 {
   "content": "Join us for our product launch next week!",
   "platforms": ["twitter", "linkedin"],
-  "scheduleTime": "2025-10-15T14:00:00Z",
+  "scheduleTime": "2025-10-20T14:00:00Z",
   "createImage": true
 }
 ```
@@ -308,12 +451,43 @@ The server provides detailed error messages for common issues:
 - Verify firewall settings allow the connection
 - Ensure the server process is running
 
+## Contributing
+
+Contributions are welcome! Please follow these steps:
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+Please ensure your code:
+- Follows the existing TypeScript style
+- Includes appropriate Zod schemas for validation
+- Updates documentation as needed
+- Passes type checking (`pnpm typecheck`)
+
 ## Support
 
-- Documentation: <https://docs.usethoth.com>
-- Issues: <https://github.com/thoth/mcp-server/issues>
-- API Reference: <https://docs.usethoth.com/api>
+- **MCP Registry**: <https://registry.modelcontextprotocol.io/servers/io.github.zeiq-co/thoth-mcp>
+- **npm Package**: <https://www.npmjs.com/package/@usethoth/mcp-server>
+- **Documentation**: <https://docs.usethoth.com>
+- **Issues**: <https://github.com/perminder-klair/thoth-mcp/issues>
+- **API Reference**: <https://docs.usethoth.com/api>
 
 ## License
 
-MIT
+MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Changelog
+
+### v1.0.1 (2025-10-08)
+- Published to official MCP Registry
+- Updated package metadata
+- Complete tool documentation
+
+### v1.0.0 (2025-10-08)
+- Initial release
+- Support for 6 Thoth API tools
+- Multi-platform content creation
+- Brand style integration

@@ -1,38 +1,21 @@
 {
-  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-07-09/server.schema.json",
-  "name": "com.usethoth/mcp-server",
-  "description": "Model Context Protocol server for Thoth content creation platform. Create multi-platform social media content with AI enhancement, image generation, and scheduling.",
-  "status": "active",
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-09-29/server.schema.json",
+  "name": "io.github.zeiq-co/thoth-mcp",
+  "description": "MCP server for Thoth with multi-platform AI content generation",
+  "version": "1.0.1",
   "repository": {
     "url": "https://github.com/perminder-klair/thoth-mcp",
     "source": "github"
   },
-  "version": "1.0.0",
   "packages": [
     {
-      "registry_type": "npm",
-      "registry_base_url": "https://registry.npmjs.org",
-      "identifier": "@zeiq/thoth-mcp-server",
-      "version": "1.0.0",
+      "registryType": "npm",
+      "registryBaseUrl": "https://registry.npmjs.org",
+      "identifier": "@usethoth/mcp-server",
+      "version": "1.0.1",
       "transport": {
         "type": "stdio"
-      },
-      "environment_variables": [
-        {
-          "description": "Thoth API key for authentication (get yours at https://app.usethoth.com/settings/api-keys)",
-          "is_required": true,
-          "format": "string",
-          "is_secret": true,
-          "name": "THOTH_API_KEY"
-        },
-        {
-          "description": "Thoth API base URL (default: https://www.usethoth.com)",
-          "is_required": false,
-          "format": "string",
-          "is_secret": false,
-          "name": "THOTH_BASE_URL"
-        }
-      ]
+      }
     }
   ]
 }

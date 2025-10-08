@@ -16,6 +16,11 @@ pnpm-debug.log*
 .env
 .env.local
 
+# MCP Registry Authentication (NEVER COMMIT THESE!)
+.mcpregistry_*
+*.pem
+server.json.bak
+
 # OS
 .DS_Store
 Thumbs.db
