@@ -92,7 +92,6 @@ export function formatGetAllPostsResponse(
   for (const post of posts) {
     lines.push('');
     lines.push(`### ${post.title || 'Untitled'}`);
-    lines.push(`- **ID:** ${post.id}`);
     lines.push(`- **Status:** ${post.status}`);
     lines.push(`- **Created:** ${new Date(post.createdAt).toLocaleString()}`);
     if (post.updatedAt) {

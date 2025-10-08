@@ -57,7 +57,6 @@ export function formatGetBrandStyleResponse(brandStyle: BrandStyle): string {
   const lines: string[] = [
     `# Brand Style: ${brandStyle.name}`,
     ``,
-    `**ID:** ${brandStyle.id}`,
     `**Content Mode:** ${brandStyle.contentMode}`,
   ];
 

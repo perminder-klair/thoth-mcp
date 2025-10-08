@@ -80,7 +80,6 @@ export function formatUpdatePostResponse(post: PostResponse): string {
   const lines: string[] = [
     `# Post Updated Successfully`,
     ``,
-    `**Post ID:** ${post.postId}`,
     `**Status:** ${post.status}`,
     `**Updated:** ${new Date(post.updatedAt).toLocaleString()}`,
     ``,

@@ -56,7 +56,6 @@ export function formatGetBrandStylesResponse(brandStyles: BrandStyle[]): string 
   for (const style of brandStyles) {
     lines.push('');
     lines.push(`### ${style.name}`);
-    lines.push(`- **ID:** ${style.id}`);
     lines.push(`- **Content Mode:** ${style.contentMode}`);
     if (style.isDefault === 'true') {
       lines.push(`- **Default:** Yes`);

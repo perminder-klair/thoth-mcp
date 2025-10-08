@@ -57,7 +57,6 @@ export function formatGetPostResponse(post: PostResponse): string {
   const lines: string[] = [
     `# Post Details`,
     ``,
-    `**Post ID:** ${post.postId}`,
     `**Status:** ${post.status}`,
     `**Created:** ${new Date(post.createdAt).toLocaleString()}`,
     `**Updated:** ${new Date(post.updatedAt).toLocaleString()}`,
@@ -95,10 +94,6 @@ export function formatGetPostResponse(post: PostResponse): string {
 
   if (post.publishedAt) {
     lines.push(``, `**Published at:** ${new Date(post.publishedAt).toLocaleString()}`);
-  }
-
-  if (post.socialPostId) {
-    lines.push(``, `**Social Post ID:** ${post.socialPostId}`);
   }
 
   return lines.join('\n');

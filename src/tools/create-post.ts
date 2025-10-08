@@ -15,7 +15,7 @@ export const createPostInputSchema = z.object({
     .string()
     .min(1, 'Content is required')
     .max(10000, 'Content must be less than 10,000 characters')
-    .describe('The original content to be enhanced and posted'),
+    .describe('The idea or prompt for Thoth to generate platform-specific content from'),
   platforms: z
     .array(platformSchema)
     .min(1, 'At least one platform is required')
@@ -49,7 +49,7 @@ export const createPostInputSchema = z.object({
     .string()
     .uuid('Invalid brand style ID')
     .optional()
-    .describe('Optional brand style ID to apply to the content'),
+    .describe('Brand style ID to apply to the content (recommended for consistent brand voice and tone). Use get-brand-styles tool to see available styles'),
 });
 
 export type CreatePostInput = z.infer<typeof createPostInputSchema>;
@@ -94,7 +94,6 @@ export function formatCreatePostResponse(post: PostResponse): string {
   const lines: string[] = [
     `# Post Created Successfully`,
     ``,
-    `**Post ID:** ${post.postId}`,
     `**Status:** ${post.status}`,
     `**Created:** ${new Date(post.createdAt).toLocaleString()}`,
     ``,
@@ -127,10 +126,6 @@ export function formatCreatePostResponse(post: PostResponse): string {
       ``,
       `**Scheduled for:** ${new Date(post.scheduledAt).toLocaleString()}`
     );
-  }
-
-  if (post.socialPostId) {
-    lines.push(``, `**Social Post ID:** ${post.socialPostId}`);
   }
 
   return lines.join('\n');
