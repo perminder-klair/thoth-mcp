@@ -1,9 +1,6 @@
 # Smithery configuration file
 # Documentation: https://smithery.ai/docs/build/project-config/smithery-yaml
 
-build:
-  dockerBuildPath: .
-
 startCommand:
   type: stdio
   configSchema:
@@ -23,9 +20,9 @@ startCommand:
     # A function that produces the CLI command to start the MCP server on stdio
     |-
     (config) => {
-      const args = ['dist/index.js', '--api-key', config.apiKey];
+      const args = ['@usethoth/mcp-server', '--api-key', config.apiKey];
       if (config.baseUrl && config.baseUrl !== 'https://www.usethoth.com') {
         args.push('--base-url', config.baseUrl);
       }
-      return { command: 'node', args: args };
+      return { command: 'npx', args: args };
     }

@@ -5,7 +5,6 @@
   "mcpName": "io.github.zeiq-co/thoth-mcp",
   "type": "module",
   "main": "./dist/index.js",
-  "module": "./src/index.ts",
   "bin": {
     "thoth-mcp": "./dist/index.js"
   },
