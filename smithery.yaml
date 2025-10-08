@@ -1,6 +1,8 @@
 # Smithery configuration file
 # Documentation: https://smithery.ai/docs/build/project-config/smithery-yaml
 
+runtime: "typescript"
+
 startCommand:
   type: stdio
   configSchema:
