@@ -1,5 +1,5 @@
 {
-  "name": "@thoth/mcp-server",
+  "name": "@zeiq/thoth-mcp-server",
   "version": "1.0.0",
   "description": "Model Context Protocol server for Thoth content creation platform",
   "mcpName": "com.usethoth/mcp-server",
