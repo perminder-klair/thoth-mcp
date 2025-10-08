@@ -2,6 +2,7 @@
 
 [![npm version](https://badge.fury.io/js/@usethoth%2Fmcp-server.svg)](https://www.npmjs.com/package/@usethoth/mcp-server)
 [![MCP Registry](https://img.shields.io/badge/MCP%20Registry-io.github.zeiq--co%2Fthoth--mcp-blue)](https://registry.modelcontextprotocol.io/servers/io.github.zeiq-co/thoth-mcp)
+[![Smithery](https://img.shields.io/badge/Smithery-Deploy-green)](https://smithery.ai/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 Model Context Protocol (MCP) server for [Thoth](https://usethoth.com) content creation platform. This server enables AI assistants and tools to create and retrieve content through Thoth's API.
@@ -52,6 +53,22 @@ Get your API key at [app.usethoth.com/settings/api-keys](https://app.usethoth.co
 The server is published in the [official MCP Registry](https://registry.modelcontextprotocol.io/) as `io.github.zeiq-co/thoth-mcp`.
 
 Browse and install via the registry web interface, or configure directly in your MCP client (see [MCP Client Configuration](#mcp-client-configuration) below).
+
+### Via Smithery (Zero-Setup Deployment)
+
+The easiest way to get started is through [Smithery](https://smithery.ai/), which provides:
+
+- **One-click installation** - No local dependencies or configuration needed
+- **Automatic updates** - Always get the latest version
+- **Secure hosting** - Your API keys are safely managed
+- **Interactive playground** - Test tools before using them
+
+Install from Smithery:
+
+1. Visit the [Thoth MCP Server on Smithery](https://smithery.ai/server/@usethoth/mcp-server) (coming soon)
+2. Click "Install"
+3. Enter your Thoth API key when prompted
+4. Start using immediately in Claude Desktop or other MCP clients
 
 ### Global Installation (via npx)
 
@@ -474,6 +491,7 @@ See [PUBLISHING.md](PUBLISHING.md) for detailed instructions on building and pub
 
 ## Support
 
+- **Smithery**: <https://smithery.ai/> (One-click deployment)
 - **MCP Registry**: <https://registry.modelcontextprotocol.io/servers/io.github.zeiq-co/thoth-mcp>
 - **npm Package**: <https://www.npmjs.com/package/@usethoth/mcp-server>
 - **Documentation**: <https://docs.usethoth.com>

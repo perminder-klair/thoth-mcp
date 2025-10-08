@@ -1,0 +1,28 @@
+# Smithery configuration file
+# Documentation: https://smithery.ai/docs/build/project-config/smithery-yaml
+
+startCommand:
+  type: stdio
+  configSchema:
+    # JSON Schema defining the configuration options for the MCP server
+    type: object
+    required:
+      - apiKey
+    properties:
+      apiKey:
+        type: string
+        description: Your Thoth API key. Get it at https://app.usethoth.com/settings/api-keys
+      baseUrl:
+        type: string
+        description: Base URL for the Thoth API (optional, defaults to https://www.usethoth.com)
+        default: https://www.usethoth.com
+  commandFunction:
+    # A function that produces the CLI command to start the MCP server on stdio
+    |-
+    (config) => {
+      const args = ['@usethoth/mcp-server', '--api-key', config.apiKey];
+      if (config.baseUrl && config.baseUrl !== 'https://www.usethoth.com') {
+        args.push('--base-url', config.baseUrl);
+      }
+      return { command: 'npx', args: args };
+    }

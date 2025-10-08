@@ -8,6 +8,7 @@ This document outlines the process for building and publishing updates to the Th
 - [Version Management](#version-management)
 - [Building the Project](#building-the-project)
 - [Publishing to npm](#publishing-to-npm)
+- [Publishing to Smithery](#publishing-to-smithery)
 - [Publishing to MCP Registry](#publishing-to-mcp-registry)
 - [Complete Release Workflow](#complete-release-workflow)
 - [Rollback Procedure](#rollback-procedure)
@@ -174,6 +175,103 @@ pnpm build && pnpm publish --access public --no-git-checks
    npx @usethoth/mcp-server@latest --help
    ```
 
+## Publishing to Smithery
+
+### Overview
+
+[Smithery](https://smithery.ai/) is a marketplace for MCP servers that provides one-click deployment and zero-setup installation for users. Unlike npm and MCP Registry, Smithery automatically deploys your server when you push changes to GitHub.
+
+### Prerequisites
+
+- GitHub account
+- GitHub repository (public or private)
+- npm package published (Smithery pulls from npm)
+- `smithery.yaml` configuration file in repository root (already included)
+
+### Initial Setup
+
+1. **Verify smithery.yaml**
+
+   The project already includes `smithery.yaml`. Verify it's up to date:
+
+   ```yaml
+   startCommand:
+     type: stdio
+     configSchema:
+       type: object
+       required:
+         - apiKey
+       properties:
+         apiKey:
+           type: string
+           description: Your Thoth API key
+         baseUrl:
+           type: string
+           description: Base URL for the Thoth API
+           default: https://www.usethoth.com
+     commandFunction: |-
+       (config) => {
+         const args = ['@usethoth/mcp-server', '--api-key', config.apiKey];
+         if (config.baseUrl && config.baseUrl !== 'https://www.usethoth.com') {
+           args.push('--base-url', config.baseUrl);
+         }
+         return { command: 'npx', args: args };
+       }
+   ```
+
+2. **Push to GitHub**
+
+   Ensure your latest changes are pushed:
+
+   ```bash
+   git add .
+   git commit -m "chore: prepare for Smithery deployment"
+   git push origin main
+   ```
+
+3. **Deploy on Smithery**
+
+   a. Visit [smithery.ai](https://smithery.ai/)
+   b. Click "Deploy" or "Add Server"
+   c. Connect your GitHub account (if not already connected)
+   d. Select the `thoth-mcp` repository
+   e. Click "Deploy"
+
+   Smithery will:
+   - Read the `smithery.yaml` configuration
+   - Pull the npm package
+   - Build and deploy the server
+   - Create a public page for users to install
+
+### Automatic Updates
+
+Once deployed, Smithery can automatically update when you:
+
+1. Publish a new version to npm
+2. Push changes to the GitHub repository
+3. Update the `smithery.yaml` configuration
+
+**Note**: Ensure version numbers in `package.json` and `server.json` match the npm published version.
+
+### Verify Smithery Deployment
+
+1. Check your server page:
+   ```
+   https://smithery.ai/server/@usethoth/mcp-server
+   ```
+
+2. Test installation through Smithery's UI
+
+3. Verify the configuration schema is displayed correctly
+
+### Benefits of Smithery
+
+- **Zero Setup for Users**: No need to install dependencies or configure paths
+- **Automatic Updates**: Users always get the latest version
+- **Secure Configuration**: API keys are managed securely
+- **Interactive Playground**: Test tools before using them
+- **Discovery**: Increased visibility in the Smithery marketplace
+
 ## Publishing to MCP Registry
 
 ### Prerequisites
@@ -259,22 +357,29 @@ pnpm build && pnpm publish --access public --no-git-checks
 # 8. Publish to MCP Registry
 mcp-publisher publish
 
-# 9. Create git tag
+# 9. Deploy to Smithery (automatic after push)
+# Smithery will auto-deploy based on smithery.yaml
+# Verify at: https://smithery.ai/server/@usethoth/mcp-server
+
+# 10. Create git tag
 git tag v1.0.X
 git push origin main --tags
 
-# 10. Verify both publications
+# 11. Verify all publications
 # - Check npmjs.com
 # - Check registry.modelcontextprotocol.io
+# - Check smithery.ai
 # - Test in Claude Desktop
 ```
 
 ### Post-Release Checklist
 
 - [ ] npm package visible at npmjs.com
+- [ ] Smithery deployment successful
 - [ ] MCP Registry updated
 - [ ] Git tag created and pushed
 - [ ] Test installation: `npx @usethoth/mcp-server@latest --help`
+- [ ] Test via Smithery installation
 - [ ] Test in Claude Desktop
 - [ ] Update any related documentation
 
