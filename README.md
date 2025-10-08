@@ -466,6 +466,11 @@ Please ensure your code:
 - Includes appropriate Zod schemas for validation
 - Updates documentation as needed
 - Passes type checking (`pnpm typecheck`)
+- Uses `console.error()` for logging (not `console.log()` - it breaks stdio mode)
+
+### For Maintainers
+
+See [PUBLISHING.md](PUBLISHING.md) for detailed instructions on building and publishing updates.
 
 ## Support
 
@@ -480,6 +485,11 @@ Please ensure your code:
 MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## Changelog
+
+### v1.0.3 (2025-10-08)
+- Added comprehensive publishing documentation (PUBLISHING.md)
+- Removed all debug console logs from config
+- Improved contributor guidelines
 
 ### v1.0.2 (2025-10-08)
 - **CRITICAL FIX**: Removed console.log statements breaking stdio JSON-RPC protocol
