@@ -23,9 +23,9 @@ startCommand:
     # A function that produces the CLI command to start the MCP server on stdio
     |-
     (config) => {
-      const args = ['--api-key', config.apiKey];
+      const args = ['dist/index.js', '--api-key', config.apiKey];
       if (config.baseUrl && config.baseUrl !== 'https://www.usethoth.com') {
         args.push('--base-url', config.baseUrl);
       }
-      return { command: 'thoth-mcp', args: args };
+      return { command: 'node', args: args };
     }

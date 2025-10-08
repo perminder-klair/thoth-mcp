@@ -1,15 +1,26 @@
 # Dockerfile for Smithery deployment
-# This runs the pre-built npm package
+# Builds the MCP server from source
 
 FROM node:20-alpine
+
+# Install pnpm
+RUN npm install -g pnpm
 
 # Set working directory
 WORKDIR /app
 
-# Install the npm package globally
-# This will be updated to use the version from package.json at runtime
-ARG NPM_PACKAGE_VERSION=latest
-RUN npm install -g @usethoth/mcp-server@${NPM_PACKAGE_VERSION}
+# Copy package files
+COPY package.json pnpm-lock.yaml ./
 
-# The entrypoint will be configured via smithery.yaml
-ENTRYPOINT ["thoth-mcp"]
+# Install dependencies
+RUN pnpm install --frozen-lockfile
+
+# Copy source code
+COPY tsconfig.json ./
+COPY src ./src
+
+# Build TypeScript to JavaScript
+RUN pnpm build
+
+# The command will be provided by smithery.yaml
+# Expected: node dist/index.js --api-key <key>
