@@ -1,6 +1,6 @@
 {
   "name": "@usethoth/mcp-server",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Model Context Protocol server for Thoth content creation platform",
   "mcpName": "io.github.zeiq-co/thoth-mcp",
   "type": "module",
@@ -16,7 +16,8 @@
     "dev": "tsc --watch",
     "start": "node dist/index.js",
     "typecheck": "tsc --noEmit",
-    "prepublishOnly": "pnpm build"
+    "prepublishOnly": "pnpm build",
+    "publish": "pnpm build && pnpm publish --access public --no-git-checks"
   },
   "keywords": [
     "mcp",

@@ -481,6 +481,11 @@ MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## Changelog
 
+### v1.0.2 (2025-10-08)
+- **CRITICAL FIX**: Removed console.log statements breaking stdio JSON-RPC protocol
+- Changed debug output to stderr to prevent JSON parsing errors
+- Server now works correctly with Claude Desktop and other MCP clients
+
 ### v1.0.1 (2025-10-08)
 - Published to official MCP Registry
 - Updated package metadata

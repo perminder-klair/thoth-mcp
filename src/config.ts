@@ -14,9 +14,6 @@ export function parseConfig(): ServerConfig {
     port: parseInt(process.env.PORT || '3001'),
     remote: false,
   };
-  console.log('Starting Thoth MCP Server with configuration:');
-  console.log(`Base URL: ${config.baseUrl}`);
-  console.log(`Port: ${config.port}`);
 
   // Parse flags
   for (let i = 0; i < args.length; i++) {
@@ -61,7 +58,7 @@ export function parseConfig(): ServerConfig {
  * Print usage help
  */
 function printHelp(): void {
-  console.log(`
+  console.error(`
 Thoth MCP Server - Model Context Protocol server for Thoth content creation
 
 Usage:
