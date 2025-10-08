@@ -4,6 +4,7 @@
 [![MCP Registry](https://img.shields.io/badge/MCP%20Registry-io.github.zeiq--co%2Fthoth--mcp-blue)](https://registry.modelcontextprotocol.io/servers/io.github.zeiq-co/thoth-mcp)
 [![Smithery](https://img.shields.io/badge/Smithery-Deploy-green)](https://smithery.ai/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![smithery badge](https://smithery.ai/badge/@perminder-klair/thoth-mcp)](https://smithery.ai/server/@perminder-klair/thoth-mcp)
 
 Model Context Protocol (MCP) server for [Thoth](https://usethoth.com) content creation platform. This server enables AI assistants and tools to create and retrieve content through Thoth's API.
 
@@ -479,6 +480,7 @@ Contributions are welcome! Please follow these steps:
 5. Open a Pull Request
 
 Please ensure your code:
+
 - Follows the existing TypeScript style
 - Includes appropriate Zod schemas for validation
 - Updates documentation as needed
@@ -505,21 +507,25 @@ MIT License - see the [LICENSE](LICENSE) file for details.
 ## Changelog
 
 ### v1.0.3 (2025-10-08)
+
 - Added comprehensive publishing documentation (PUBLISHING.md)
 - Removed all debug console logs from config
 - Improved contributor guidelines
 
 ### v1.0.2 (2025-10-08)
+
 - **CRITICAL FIX**: Removed console.log statements breaking stdio JSON-RPC protocol
 - Changed debug output to stderr to prevent JSON parsing errors
 - Server now works correctly with Claude Desktop and other MCP clients
 
 ### v1.0.1 (2025-10-08)
+
 - Published to official MCP Registry
 - Updated package metadata
 - Complete tool documentation
 
 ### v1.0.0 (2025-10-08)
+
 - Initial release
 - Support for 6 Thoth API tools
 - Multi-platform content creation
