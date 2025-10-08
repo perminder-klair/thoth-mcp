@@ -21,6 +21,12 @@ pnpm dev
 # Type checking only (no output)
 pnpm typecheck
 
+# Lint code for errors
+pnpm lint
+
+# Lint and auto-fix issues
+pnpm lint:fix
+
 # Run the server locally
 pnpm start -- --api-key YOUR_API_KEY
 
