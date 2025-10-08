@@ -1,0 +1,40 @@
+{
+  "name": "@thoth/mcp-server",
+  "version": "1.0.0",
+  "description": "Model Context Protocol server for Thoth content creation platform",
+  "type": "module",
+  "main": "./dist/index.js",
+  "bin": {
+    "thoth-mcp": "./dist/index.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "start": "node dist/index.js",
+    "typecheck": "tsc --noEmit",
+    "prepublishOnly": "pnpm build"
+  },
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "thoth",
+    "content-creation",
+    "ai"
+  ],
+  "author": "Thoth Team",
+  "license": "MIT",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.18.0",
+    "zod": "^4.1.8"
+  },
+  "devDependencies": {
+    "@types/node": "^24.3.3",
+    "typescript": "^5.9.2"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
