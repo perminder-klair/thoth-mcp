@@ -10,10 +10,13 @@ export function parseConfig(): ServerConfig {
   // Parse command-line arguments
   const config: Partial<ServerConfig> = {
     apiKey: process.env.THOTH_API_KEY || '',
-    baseUrl: process.env.THOTH_BASE_URL || 'http://localhost:3000',
+    baseUrl: process.env.THOTH_BASE_URL || 'https://www.usethoth.com',
     port: parseInt(process.env.PORT || '3001'),
     remote: false,
   };
+  console.log('Starting Thoth MCP Server with configuration:');
+  console.log(`Base URL: ${config.baseUrl}`);
+  console.log(`Port: ${config.port}`);
 
   // Parse flags
   for (let i = 0; i < args.length; i++) {
@@ -66,7 +69,7 @@ Usage:
 
 Options:
   -k, --api-key <key>      Thoth API key (required)
-  -u, --base-url <url>     Base URL for Thoth API (default: http://localhost:3000)
+  -u, --base-url <url>     Base URL for Thoth API (default: https://www.usethoth.com)
   -p, --port <number>      Port for remote server mode (default: 3001)
   -r, --remote             Run as remote HTTP server instead of stdio
   -h, --help               Show this help message

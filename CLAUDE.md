@@ -41,11 +41,13 @@ npx @modelcontextprotocol/inspector pnpm start -- --api-key YOUR_API_KEY
 ### Tools Architecture
 
 All tools in `src/tools/` follow the same pattern:
+
 1. Export a Zod input schema (e.g., `createPostInputSchema`)
 2. Export an async function that calls the Thoth API
 3. Export a formatter function that converts the API response to markdown
 
 Tool files:
+
 - **create-post.ts**: Creates multi-platform posts with AI enhancement, optional image generation, scheduling
 - **get-post.ts**: Retrieves post by ID, also exports `getPostPreview()` for platform-specific views
 - **get-all-posts.ts**: Lists posts with pagination and status filtering
@@ -56,6 +58,7 @@ Tool files:
 ### MCP Resources
 
 The server exposes two URI schemes:
+
 - `post://{postId}` - Returns full post data as markdown
 - `preview://{postId}/{platform}` - Returns platform-specific content preview
 
@@ -63,7 +66,8 @@ Both are handled in the `ReadResourceRequestSchema` handler in src/index.ts.
 
 ## API Integration
 
-The server calls Thoth's REST API at the configured base URL (default: `http://localhost:3000`):
+The server calls Thoth's REST API at the configured base URL (default: `https://www.usethoth.com`):
+
 - `POST /api/v1/posts` - Create posts
 - `GET /api/v1/posts/{postId}` - Get single post
 - `GET /api/v1/posts` - List posts with pagination

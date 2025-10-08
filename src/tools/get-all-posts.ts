@@ -45,10 +45,12 @@ export async function getAllPosts(
 
   const url = `${config.baseUrl}/api/v1/posts?${queryParams.toString()}`;
 
+  console.log(`Fetching all posts from: ${url}`);
   const response = await fetch(url, {
     method: 'GET',
     headers: createHeaders(config.apiKey),
   });
+  console.log(`Response status: ${response.status}`);
 
   if (!response.ok) {
     const errorData = (await response.json()) as ApiResponse<never>;
