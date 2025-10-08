@@ -43,8 +43,8 @@ export function parseConfig(): ServerConfig {
     }
   }
 
-  // Validate required configuration
-  if (!config.apiKey) {
+  // Validate required configuration (skip for remote mode, config comes per-request)
+  if (!config.apiKey && !config.remote) {
     console.error('Error: API key is required');
     console.error('Provide it via --api-key flag or THOTH_API_KEY environment variable');
     printHelp();
@@ -52,6 +52,16 @@ export function parseConfig(): ServerConfig {
   }
 
   return config as ServerConfig;
+}
+
+/**
+ * Parse configuration from query parameters (for HTTP mode)
+ */
+export function parseQueryConfig(query: Record<string, unknown>): Pick<ServerConfig, 'apiKey' | 'baseUrl'> {
+  return {
+    apiKey: (query.apiKey as string) || '',
+    baseUrl: (query.baseUrl as string) || 'https://www.usethoth.com',
+  };
 }
 
 /**

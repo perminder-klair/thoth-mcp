@@ -2,13 +2,17 @@
 
 import { Server } from '@modelcontextprotocol/sdk/server/index.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
+import { StreamableHTTPServerTransport } from '@modelcontextprotocol/sdk/server/streamableHttp.js';
 import {
   CallToolRequestSchema,
   ListToolsRequestSchema,
   ListResourcesRequestSchema,
   ReadResourceRequestSchema,
 } from '@modelcontextprotocol/sdk/types.js';
-import { parseConfig } from './config.js';
+import express from 'express';
+import cors from 'cors';
+import type { Request, Response } from 'express';
+import { parseConfig, parseQueryConfig } from './config.js';
 import {
   createPost,
   createPostInputSchema,
@@ -42,11 +46,9 @@ import {
 } from './tools/get-brand-style.js';
 
 /**
- * Main function to start the MCP server
+ * Create and configure the MCP server with all handlers
  */
-async function main(): Promise<void> {
-  const config = parseConfig();
-
+function createMCPServer(config: ReturnType<typeof parseConfig>): Server {
   // Create MCP server instance
   const server = new Server(
     {
@@ -447,21 +449,100 @@ async function main(): Promise<void> {
     }
   });
 
+  return server;
+}
+
+/**
+ * Main function to start the MCP server
+ */
+async function main(): Promise<void> {
+  const config = parseConfig();
+
   // Start server with appropriate transport
   if (config.remote) {
-    // HTTP/SSE transport support would require additional dependencies
-    // For now, we'll use stdio transport which is the most common use case
-    console.error('Note: Remote HTTP mode is not yet fully implemented.');
-    console.error('Using stdio transport instead.');
-    console.error(
-      'For remote access, consider using an SSH tunnel or MCP proxy.'
-    );
-  }
+    // HTTP mode for Smithery deployment
+    const app = express();
+    const port = parseInt(process.env.PORT || '8081');
 
-  // Use stdio transport
-  const transport = new StdioServerTransport();
-  await server.connect(transport);
-  console.error('Thoth MCP Server started (stdio mode)');
+    // Configure CORS for MCP
+    app.use(
+      cors({
+        origin: '*',
+        credentials: true,
+        methods: ['GET', 'POST', 'OPTIONS'],
+        allowedHeaders: ['*'],
+        exposedHeaders: ['mcp-session-id', 'mcp-protocol-version'],
+        maxAge: 86400,
+      })
+    );
+
+    // Parse JSON bodies
+    app.use(express.json());
+
+    // Health check endpoint
+    app.get('/health', (_req, res) => {
+      res.json({ status: 'ok', service: 'thoth-mcp' });
+    });
+
+    // MCP endpoint
+    app.post('/mcp', async (req: Request, res: Response) => {
+      try {
+        // Parse configuration from query parameters
+        const queryConfig = parseQueryConfig(req.query);
+
+        // Validate API key from query params
+        if (!queryConfig.apiKey) {
+          res.status(400).json({
+            error: 'Bad Request',
+            message: 'apiKey query parameter is required',
+          });
+          return;
+        }
+
+        // Merge with base config (for things like remote flag, port)
+        const requestConfig = { ...config, ...queryConfig };
+
+        // Create a new transport for each request to avoid ID collisions
+        const transport = new StreamableHTTPServerTransport({
+          sessionIdGenerator: undefined,
+          enableJsonResponse: true,
+        });
+
+        // Create a new server instance with request-specific config
+        const server = createMCPServer(requestConfig);
+
+        // Clean up transport when response closes
+        res.on('close', () => {
+          transport.close();
+        });
+
+        // Connect and handle the request
+        await server.connect(transport);
+        await transport.handleRequest(req, res, req.body);
+      } catch (error) {
+        console.error('Error handling MCP request:', error);
+        if (!res.headersSent) {
+          res.status(500).json({
+            error: 'Internal server error',
+            message: error instanceof Error ? error.message : 'Unknown error',
+          });
+        }
+      }
+    });
+
+    // Start HTTP server
+    app.listen(port, '0.0.0.0', () => {
+      console.error(`Thoth MCP Server started (HTTP mode)`);
+      console.error(`Listening on port ${port}`);
+      console.error(`MCP endpoint: http://0.0.0.0:${port}/mcp`);
+    });
+  } else {
+    // Stdio mode for local/Claude Desktop use
+    const server = createMCPServer(config);
+    const transport = new StdioServerTransport();
+    await server.connect(transport);
+    console.error('Thoth MCP Server started (stdio mode)');
+  }
 }
 
 // Run the server
