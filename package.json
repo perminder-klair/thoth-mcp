@@ -1,6 +1,6 @@
 {
   "name": "@usethoth/mcp-server",
-  "version": "1.0.3",
+  "version": "1.0.5",
   "description": "Model Context Protocol server for Thoth content creation platform",
   "mcpName": "io.github.zeiq-co/thoth-mcp",
   "type": "module",

@@ -100,8 +100,33 @@ export type ApiResponse<T> = ApiSuccess<T> | ApiError;
 export interface BrandColors {
   primary1?: string;
   primary2?: string;
+  primary3?: string;
   secondary1?: string;
   secondary2?: string;
+  background1?: string;
+  background2?: string;
+}
+
+/**
+ * Brand logo information
+ */
+export interface BrandLogo {
+  style?: string;
+  exists?: boolean;
+  position?: string;
+  confidence?: number;
+  extracted_colors?: string[];
+}
+
+/**
+ * Brand identity information
+ */
+export interface BrandIdentity {
+  logo?: BrandLogo;
+  tagline?: string | null;
+  brand_name?: string;
+  primary_colors?: string[];
+  secondary_colors?: string[];
 }
 
 /**
@@ -110,6 +135,60 @@ export interface BrandColors {
 export interface BrandTone {
   voice?: string;
   style?: string;
+  syntax?: string[];
+  emotion?: string[];
+  purpose?: string;
+  audience?: string;
+  keywords?: string[];
+  language?: string[];
+  character?: string[];
+}
+
+/**
+ * Visual mood configuration
+ */
+export interface VisualMood {
+  energy_level?: string;
+  time_preference?: string;
+  emotional_keywords?: string[];
+}
+
+/**
+ * Artistic style configuration
+ */
+export interface ArtisticStyle {
+  texture?: string;
+  detail_level?: string;
+}
+
+/**
+ * Brand visual elements configuration
+ */
+export interface BrandVisualElements {
+  avoid_elements?: string[];
+  recurring_motifs?: string[];
+  must_include_elements?: string[];
+}
+
+/**
+ * Imagery style configuration
+ */
+export interface ImageryStyle {
+  tone?: string;
+  image_type?: string;
+  visual_mood?: VisualMood;
+  subject_focus?: string;
+  artistic_style?: ArtisticStyle;
+  quality_assessment?: string;
+  brand_visual_elements?: BrandVisualElements;
+}
+
+/**
+ * Medium information configuration
+ */
+export interface MediumInfo {
+  language?: string;
+  text_density?: string;
 }
 
 /**
@@ -121,7 +200,10 @@ export interface BrandStyle {
   contentMode: string;
   colors?: BrandColors;
   tone?: BrandTone;
-  imageryStyle?: string;
+  imageryStyle?: ImageryStyle;
+  logo?: string;
+  brandIdentity?: BrandIdentity;
+  mediumInfo?: MediumInfo;
   isDefault?: string;
   createdAt: string;
   updatedAt?: string;

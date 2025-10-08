@@ -56,10 +56,44 @@ export function formatGetBrandStylesResponse(brandStyles: BrandStyle[]): string 
   for (const style of brandStyles) {
     lines.push('');
     lines.push(`### ${style.name}`);
+    lines.push(`- **ID:** ${style.id}`);
     lines.push(`- **Content Mode:** ${style.contentMode}`);
     if (style.isDefault === 'true') {
       lines.push(`- **Default:** Yes`);
     }
+
+    // Add purpose if available
+    if (style.tone?.purpose) {
+      lines.push(`- **Purpose:** ${style.tone.purpose}`);
+    }
+
+    // Add audience if available
+    if (style.tone?.audience) {
+      lines.push(`- **Target Audience:** ${style.tone.audience}`);
+    }
+
+    // Add brand voice and style
+    if (style.tone?.voice || style.tone?.style) {
+      const voiceStyle = [];
+      if (style.tone.voice) voiceStyle.push(style.tone.voice);
+      if (style.tone.style) voiceStyle.push(style.tone.style);
+      lines.push(`- **Voice & Style:** ${voiceStyle.join(', ')}`);
+    }
+
+    // Add key visual info
+    if (style.imageryStyle && typeof style.imageryStyle !== 'string') {
+      const visualInfo = [];
+      if (style.imageryStyle.image_type) {
+        visualInfo.push(style.imageryStyle.image_type);
+      }
+      if (style.imageryStyle.tone) {
+        visualInfo.push(style.imageryStyle.tone);
+      }
+      if (visualInfo.length > 0) {
+        lines.push(`- **Visual Style:** ${visualInfo.join(', ')}`);
+      }
+    }
+
     lines.push(`- **Created:** ${new Date(style.createdAt).toLocaleString()}`);
     if (style.updatedAt) {
       lines.push(`- **Updated:** ${new Date(style.updatedAt).toLocaleString()}`);
