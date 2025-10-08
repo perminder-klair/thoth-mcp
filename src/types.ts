@@ -25,7 +25,7 @@ export type ContentLength = z.infer<typeof lengthSchema>;
 /**
  * Post status types
  */
-export type PostStatus = 'draft' | 'scheduled' | 'published' | 'failed';
+export type PostStatus = 'draft' | 'scheduled' | 'published' | 'archived';
 
 /**
  * Platform-specific content

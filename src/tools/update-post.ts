@@ -28,7 +28,7 @@ export const updatePostInputSchema = z.object({
     .optional()
     .describe('Updated platform-specific content variations'),
   status: z
-    .enum(['draft', 'scheduled', 'published', 'failed'])
+    .enum(['draft', 'scheduled', 'published', 'archived'])
     .optional()
     .describe('Updated post status'),
 });

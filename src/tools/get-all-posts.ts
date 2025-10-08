@@ -22,7 +22,7 @@ export const getAllPostsInputSchema = z.object({
     .default(10)
     .describe('Number of posts per page'),
   status: z
-    .enum(['draft', 'scheduled', 'published', 'failed'])
+    .enum(['draft', 'scheduled', 'published', 'archived'])
     .optional()
     .describe('Filter posts by status'),
 });

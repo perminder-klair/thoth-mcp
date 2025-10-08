@@ -152,7 +152,7 @@ async function main(): Promise<void> {
             },
             status: {
               type: 'string',
-              enum: ['draft', 'scheduled', 'published', 'failed'],
+              enum: ['draft', 'scheduled', 'published', 'archived'],
               description: 'Filter posts by status',
             },
           },
@@ -184,7 +184,7 @@ async function main(): Promise<void> {
             },
             status: {
               type: 'string',
-              enum: ['draft', 'scheduled', 'published', 'failed'],
+              enum: ['draft', 'scheduled', 'published', 'archived'],
               description: 'Updated post status',
             },
           },
