@@ -44,7 +44,7 @@ Get your API key at [app.usethoth.com/settings/api-keys](https://app.usethoth.co
 - **Brand Styles**: Apply consistent voice, tone, and visual styling with brand presets
 - **Image Generation**: Optionally generate images for your content
 - **Scheduling**: Schedule posts for future publication
-- **Dual Transport**: Run locally (stdio) or as a remote HTTP server
+- **Dual Transport**: Supports both stdio (local) and HTTP transports (Smithery/cloud deployment)
 - **Type-Safe**: Built with TypeScript and Zod validation
 
 ## Installation
@@ -66,7 +66,7 @@ The easiest way to get started is through [Smithery](https://smithery.ai/), whic
 
 Install from Smithery:
 
-1. Visit the [Thoth MCP Server on Smithery](https://smithery.ai/server/@usethoth/mcp-server) (coming soon)
+1. Visit the [Thoth MCP Server on Smithery](https://smithery.ai/server/@perminder-klair/thoth-mcp)
 2. Click "Install"
 3. Enter your Thoth API key when prompted
 4. Start using immediately in Claude Desktop or other MCP clients
@@ -121,22 +121,52 @@ npx @usethoth/mcp-server \
 
 #### Remote HTTP Server Mode
 
-> **Note:** Remote HTTP mode is not yet fully implemented. For remote access, consider using an SSH tunnel or MCP proxy with the stdio transport.
+Run the server in HTTP mode for cloud deployments (like Smithery) or to expose the server over HTTP:
 
 ```bash
-# SSH tunnel example (forwards local MCP to remote server)
-ssh -R /tmp/mcp.sock:localhost:3000 user@remote-server
+npx @usethoth/mcp-server --remote --api-key YOUR_API_KEY
 ```
+
+The server will start an HTTP server on port 8081 (configurable via `PORT` environment variable) with:
+- `/mcp` - Main MCP endpoint (POST)
+- `/health` - Health check endpoint (GET)
+
+With custom configuration:
+
+```bash
+PORT=3000 npx @usethoth/mcp-server \
+  --remote \
+  --api-key YOUR_API_KEY \
+  --base-url https://app.usethoth.com
+```
+
+**Note:** In HTTP mode, the server implements [MCP Streamable HTTP transport](https://modelcontextprotocol.io/specification/2025-03-26/basic/transports#streamable-http) with proper CORS configuration for browser-based clients.
 
 ### Environment Variables
 
 Instead of command-line flags, you can use environment variables:
+
+**For stdio mode:**
 
 ```bash
 export THOTH_API_KEY=your_api_key
 export THOTH_BASE_URL=http://localhost:3000
 npx @usethoth/mcp-server
 ```
+
+**For HTTP mode:**
+
+```bash
+export THOTH_API_KEY=your_api_key
+export THOTH_BASE_URL=https://www.usethoth.com
+export PORT=8081
+npx @usethoth/mcp-server --remote
+```
+
+Available environment variables:
+- `THOTH_API_KEY` - Your Thoth API key (stdio mode only; HTTP mode uses query params)
+- `THOTH_BASE_URL` - Base URL for Thoth API (default: `https://www.usethoth.com`)
+- `PORT` - HTTP server port (HTTP mode only, default: `8081`)
 
 ## MCP Client Configuration
 
@@ -448,6 +478,28 @@ The server provides detailed error messages for common issues:
 }
 ```
 
+### Testing HTTP Mode Locally
+
+Start the server in HTTP mode:
+
+```bash
+npx @usethoth/mcp-server --remote --api-key YOUR_API_KEY
+```
+
+Test the health endpoint:
+
+```bash
+curl http://localhost:8081/health
+```
+
+Test the MCP endpoint with MCP Inspector:
+
+```bash
+npx @modelcontextprotocol/inspector http://localhost:8081/mcp?apiKey=YOUR_API_KEY
+```
+
+Or use with a Streamable HTTP MCP client that supports query-based configuration.
+
 ## Troubleshooting
 
 ### Server won't start
@@ -465,9 +517,20 @@ The server provides detailed error messages for common issues:
 
 ### HTTP mode not accessible
 
-- Check the port isn't already in use
+- Check the port isn't already in use: `lsof -i :8081` (or your configured PORT)
 - Verify firewall settings allow the connection
-- Ensure the server process is running
+- Ensure the server process is running with the `--remote` flag
+- Check the server logs for any startup errors
+- Verify the `/health` endpoint responds: `curl http://localhost:8081/health`
+- For Smithery deployments, check the deployment logs in the Smithery dashboard
+
+### Smithery deployment fails
+
+- Ensure your GitHub repository is public or connected to Smithery
+- Verify `smithery.yaml` and `Dockerfile` are in the repository root
+- Check the build logs in Smithery dashboard for specific errors
+- Ensure all dependencies are declared in `package.json`
+- Try building the Docker image locally: `docker build -t thoth-mcp .`
 
 ## Contributing
 
@@ -505,6 +568,17 @@ See [PUBLISHING.md](PUBLISHING.md) for detailed instructions on building and pub
 MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## Changelog
+
+### v1.2.0 (2025-10-08)
+
+- **NEW**: Added HTTP transport support for Smithery and cloud deployments
+- **NEW**: Implemented MCP Streamable HTTP with `/mcp` and `/health` endpoints
+- Server now supports dual transport modes: stdio (local) and HTTP (remote)
+- Added Express and CORS dependencies for HTTP server
+- Added Dockerfile for containerized deployment
+- Configured for Smithery deployment with proper HTTP runtime
+- HTTP mode supports configuration via query parameters
+- Maintains backward compatibility with stdio mode for Claude Desktop
 
 ### v1.0.3 (2025-10-08)
 
