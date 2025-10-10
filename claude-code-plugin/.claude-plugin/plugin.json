@@ -1,0 +1,30 @@
+{
+  "name": "thoth",
+  "version": "1.0.0",
+  "description": "Social media content creation plugin powered by Thoth. Create, schedule, and manage multi-platform posts with AI-enhanced content and brand consistency.",
+  "author": {
+    "name": "Thoth Team",
+    "email": "[email protected]",
+    "url": "https://www.usethoth.com"
+  },
+  "homepage": "https://www.usethoth.com",
+  "repository": "https://github.com/perminder-klair/thoth-mcp",
+  "license": "MIT",
+  "keywords": [
+    "social-media",
+    "content-creation",
+    "ai-content",
+    "multi-platform",
+    "brand-management",
+    "twitter",
+    "instagram",
+    "linkedin",
+    "facebook",
+    "threads",
+    "reddit",
+    "blog"
+  ],
+  "commands": "./commands/",
+  "agents": "./agents/",
+  "mcpServers": "./.mcp.json"
+}

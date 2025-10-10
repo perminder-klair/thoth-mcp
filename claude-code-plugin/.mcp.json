@@ -1,0 +1,17 @@
+{
+  "mcpServers": {
+    "thoth": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@usethoth/mcp-server",
+        "--api-key",
+        "${THOTH_API_KEY}"
+      ],
+      "description": "Thoth content creation platform MCP server. Enables AI-powered multi-platform social media content creation and management.",
+      "env": {
+        "THOTH_API_KEY": "${THOTH_API_KEY}"
+      }
+    }
+  }
+}

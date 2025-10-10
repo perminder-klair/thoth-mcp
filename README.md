@@ -8,6 +8,8 @@
 
 Model Context Protocol (MCP) server for [Thoth](https://usethoth.com) content creation platform. This server enables AI assistants and tools to create and retrieve content through Thoth's API.
 
+**✨ NEW:** [Claude Code Plugin](#claude-code-plugin) now available with slash commands and specialized AI agents for streamlined content creation workflows!
+
 ## Quick Start
 
 ```bash
@@ -23,6 +25,7 @@ Get your API key at [app.usethoth.com/settings/api-keys](https://app.usethoth.co
 
 - [Quick Start](#quick-start)
 - [Features](#features)
+- [Claude Code Plugin](#claude-code-plugin)
 - [Installation](#installation)
 - [Usage](#usage)
 - [MCP Client Configuration](#mcp-client-configuration)
@@ -46,6 +49,54 @@ Get your API key at [app.usethoth.com/settings/api-keys](https://app.usethoth.co
 - **Scheduling**: Schedule posts for future publication
 - **Dual Transport**: Supports both stdio (local) and HTTP transports (Smithery/cloud deployment)
 - **Type-Safe**: Built with TypeScript and Zod validation
+
+## Claude Code Plugin
+
+**NEW!** We've created an official Claude Code plugin that makes social media content creation even easier with user-friendly commands and specialized AI agents.
+
+### What is it?
+
+The Thoth plugin for Claude Code provides:
+
+- **5 Slash Commands**: Quick access to common workflows
+  - `/create-content` - Create multi-platform posts with AI guidance
+  - `/schedule-post` - Schedule posts for optimal engagement times
+  - `/view-brands` - Browse and manage your brand styles
+  - `/manage-posts` - List, filter, and manage all your posts
+  - `/preview-post` - Preview platform-specific content formatting
+
+- **3 Specialized Agents**: Expert AI assistants for specific tasks
+  - **Content Creator** - Expert at crafting engaging, platform-optimized content
+  - **Brand Manager** - Ensures brand consistency across all platforms
+  - **Social Media Optimizer** - Maximizes reach and engagement through data-driven strategies
+
+### Quick Start with Plugin
+
+```bash
+# Install the plugin
+claude plugin install thoth
+
+# Set your API key
+export THOTH_API_KEY="your-api-key-here"
+
+# Start creating content
+claude /create-content "Announcing our new feature"
+
+# Or use an agent
+claude "Content Creator, help me announce our product launch"
+```
+
+### Documentation
+
+Full plugin documentation, installation instructions, and usage examples are available in the [claude-code-plugin](./claude-code-plugin) directory.
+
+See [claude-code-plugin/README.md](./claude-code-plugin/README.md) for:
+
+- Detailed installation instructions
+- Complete command reference
+- Agent usage guides
+- Advanced workflows and examples
+- Troubleshooting tips
 
 ## Installation
 
@@ -128,6 +179,7 @@ npx @usethoth/mcp-server --remote --api-key YOUR_API_KEY
 ```
 
 The server will start an HTTP server on port 8081 (configurable via `PORT` environment variable) with:
+
 - `/mcp` - Main MCP endpoint (POST)
 - `/health` - Health check endpoint (GET)
 
@@ -164,6 +216,7 @@ npx @usethoth/mcp-server --remote
 ```
 
 Available environment variables:
+
 - `THOTH_API_KEY` - Your Thoth API key (stdio mode only; HTTP mode uses query params)
 - `THOTH_BASE_URL` - Base URL for Thoth API (default: `https://www.usethoth.com`)
 - `PORT` - HTTP server port (HTTP mode only, default: `8081`)
@@ -568,6 +621,15 @@ See [PUBLISHING.md](PUBLISHING.md) for detailed instructions on building and pub
 MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## Changelog
+
+### v1.3.0 (2025-10-10)
+
+- **NEW**: Added official Claude Code plugin
+- **NEW**: 5 slash commands for streamlined content workflows
+- **NEW**: 3 specialized AI agents (Content Creator, Brand Manager, Social Media Optimizer)
+- Plugin provides user-friendly interface to all MCP server capabilities
+- Comprehensive plugin documentation and usage examples
+- Enhanced developer experience for Claude Code users
 
 ### v1.2.0 (2025-10-08)
 
